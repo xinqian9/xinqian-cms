@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     <mapper namespace="com.xinqian.cms.dao.UserDao">
+     	<!-- 高级映射 -->
+     	<resultMap type="com.xinqian.cms.domain.User" id="userMap">
+     		<id property="id" column="id"/>
+     		<result property="username" column="username"/>
+     		<result property="password" column="password"/>
+     		<result property="nickname" column="nickname"/>
+     		<!-- 性别在数据中心是int类型 java中是枚举类型 此时需要转换器 -->
+     		
+     		<result property="gender" column="gender" javaType="com.xinqian.cms.domain.enums.Gender" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+     		<result property="birthday" column="birthday"/>
+     		<result property="created" column="created"/>
+     		<result property="locked" column="locked"/>
+     	</resultMap>
+     	<!-- sql片段 -->
+     	<sql id="user_column">
+     			id,username,password,nickname,birthday,gender,created,locked,role
+     		</sql>
+     	<select id="selectUsers" resultMap="userMap">
+     		select <include refid="user_column"/> from cms_user
+     		<where>
+     			<if test="null!=username and username!=''">and username like concat('%',#{username},'%')</if>
+     		</where>
+     	</select>
+     	
+     	<!-- 查询单个用户 -->
+     	<select id="selectUserById" resultMap="userMap">
+     		select <include refid="user_column"/> from cms_user where id=#{id}
+     	</select>
+     	
+     	<!-- 用户是否禁用0:正常 1：不正常 -->
+     	<update id="updateLocked">
+     		update cms_user set locked=#{locked} where id=#{id}
+     	</update>
+     	
+     	<!--登录 -->
+     	<select id="login" resultMap="userMap">
+     		select <include refid="user_column"/> from cms_user where username=#{username}
+     	</select>
+     	
+     	<!-- 验证用户名唯一性 -->
+     	<select id="getCntByUsername" resultType="int">
+     		select count(*) from cms_user where username=#{username}
+     	</select>
+     	<insert id="insertUser">
+     		insert into cms_user 
+     		<set>
+     			<if test="null!=username">
+     				username=#{username},
+     			</if>
+     			<if test="null!=password">
+     				password=#{password},
+     			</if>
+     			<if test="null==locked">
+     				locked=0,
+     			</if>
+     			<if test="null==created">
+     				created=now(),
+     			</if>
+     			<if test="null!=role">
+     				role=#{role},
+     			</if>
+     		</set>
+     	</insert>
+     </mapper>
