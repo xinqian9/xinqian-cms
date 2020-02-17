@@ -53,7 +53,7 @@ public class AdminController {
 			article.setUser_id(user.getId());
 		}
 		System.out.println("article:====="+user.getId());
-		//查询所有文章
+		//查询所有文章。
 		PageInfo<Article> page = articleService.selectArticleByAdmin(article,pageNum,pageSize);
 		m.addAttribute("list", page.getList());
 		m.addAttribute("article",new Article());
