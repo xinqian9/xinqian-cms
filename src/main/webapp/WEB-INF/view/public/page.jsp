@@ -11,7 +11,7 @@
 	<nav aria-label="Page navigation example">
 		  <ul class="pagination">
 		    <li class="page-item">
-		      <a class="page-link" href="javascript:gopage(${p==0?1:page.prePage})" aria-label="Previous">
+		      <a class="page-link" href="javascript:gopage(${page.prePage==0?1:page.prePage})" aria-label="Previous">
 		        <span aria-hidden="true">&laquo;</span>
 		      </a>
 		    </li>
@@ -20,7 +20,7 @@
 		    
 		    </c:forEach>
 		    <li class="page-item">
-		      <a class="page-link" href="javascript:gopage(${p==0?page.pages:page.nextPage})" aria-label="Next">
+		      <a class="page-link" href="javascript:gopage(${page.nextPage==0?page.pages:page.nextPage})" aria-label="Next">
 		        <span aria-hidden="true">&raquo;</span>
 		      </a>
 		    </li>

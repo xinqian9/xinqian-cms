@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,10 +19,12 @@ import com.github.pagehelper.PageInfo;
 import com.xinqian.cms.domain.Article;
 import com.xinqian.cms.domain.Category;
 import com.xinqian.cms.domain.Channel;
+import com.xinqian.cms.domain.Comment;
 import com.xinqian.cms.domain.User;
 import com.xinqian.cms.service.ArticleService;
 import com.xinqian.cms.service.CategoryService;
 import com.xinqian.cms.service.ChannelService;
+import com.xinqian.cms.service.CommentService;
 @RequestMapping("article")
 @Controller
 public class ArticleController {
@@ -31,6 +34,8 @@ public class ArticleController {
 	private ChannelService channelService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private CommentService commentService;
 	@RequestMapping("selectsByAdmin")
 	public String selectsByAdmin(Model m,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "3")Integer pageSize,Article article) {
 		PageInfo<Article> page = articleService.selectArticleByAdmin(article,pageNum,pageSize);
@@ -48,10 +53,22 @@ public class ArticleController {
 	
 	//@ResponseBody
 	@RequestMapping("selectArticleById")
-	public Object selectArticleById(Model m,Integer id) {
+	public Object selectArticleById(Model m,Integer id,Article article,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10")Integer pageSize) {
+		Article article1=articleService.selectArticleById(article.getId());
+		m.addAttribute("article", article1);
+		//通过文章id查询所有的评论
+		PageInfo<Comment> info=commentService.selectComments(article.getId(),pageNum,pageSize);
+		m.addAttribute("list",info.getList());
+		m.addAttribute("page",info);
+		return "mine/content";
+	}
+	
+	@ResponseBody
+	@PostMapping("selectArticleById")
+	public Object selectArticleBy(Model m,Integer id) {
 		Article article=articleService.selectArticleById(id);
 		m.addAttribute("article", article);
-		return "mine/content";
+		return article;
 	}
 	
 	@RequestMapping("toAdd")
@@ -85,7 +102,7 @@ public class ArticleController {
 		try {
 			if (myfile.getSize()>0) {
 				//上传图片
-				String path="e:/pic";
+				String path="e:/pic/";
 				//获得上传文件的名称
 				String realName = myfile.getOriginalFilename();
 				//获得后缀
@@ -116,10 +133,21 @@ public class ArticleController {
 		m.addAttribute("list", page.getList());
 		m.addAttribute("article",article);
 		m.addAttribute("page", page);
-//		int[] pageNums = page.getNavigatepageNums();
-//		m.addAttribute("pageNums",pageNums);
+		
 
 		return "mine/article";
+	}
+	@RequestMapping("selectByChannelId")
+	public Object selectByChannelId(Model m,@RequestParam(defaultValue = "1")Integer pageNum,Integer pageSize,Integer channel_id) {
+		System.out.println(channel_id);
+		PageInfo<Article> carticle=articleService.selectByChannelId(pageNum,pageSize,channel_id);
+		m.addAttribute("cateArticles", carticle.getList());
+		for (Article article : carticle.getList()) {
+			System.out.println(article);
+		}
+		m.addAttribute("page", carticle);
+		
+		return "index/main";
 	}
 
 	

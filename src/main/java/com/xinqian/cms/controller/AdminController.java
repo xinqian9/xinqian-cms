@@ -73,7 +73,7 @@ public class AdminController {
 			List<Category> categories = categoryService.selectCategorys(article.getChannel_id());
 			m.addAttribute("categories", categories);
 			//查询此栏目或此分类下的文章
-			PageInfo<Article> pInfo3 = articleService.selectArticleByAdmin(article, pageNum,pageSize);
+			PageInfo<Article> pInfo3 = articleService.selectArticleByAdmin(article, pageNum,20);
 			
 			m.addAttribute("page", pInfo3);
 			m.addAttribute("cateArticles", pInfo3.getList());
@@ -84,15 +84,16 @@ public class AdminController {
 			m.addAttribute("slideList", slideList);
 			//查询所有热门文章
 			article.setHot(1);
-			PageInfo<Article> pInfo = articleService.selectArticleByAdmin(article,pageNum,pageSize);
+			PageInfo<Article> pInfo = articleService.selectArticleByAdmin(article,pageNum,20);
 			m.addAttribute("hotArticles", pInfo.getList());
-			m.addAttribute("page", pInfo);
 		}
 		m.addAttribute("article",article);
 
 		//显示最新文章
 		PageInfo<Article> pInfo2 = articleService.selectArticleByAdmin(article, pageNum, pageSize);
 		m.addAttribute("newArticles", pInfo2.getList());
+		PageInfo<Article> pInfo = articleService.selectHotArticleByAdmin(article,pageNum,10);
+		m.addAttribute("hot", pInfo.getList());
 		return "index/main";
 	}
 	//管理员去登录

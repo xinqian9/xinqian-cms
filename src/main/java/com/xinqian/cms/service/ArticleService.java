@@ -20,4 +20,8 @@ public interface ArticleService {
 	List<Category> selectCategorys(Integer id);
 
 	void addArticle(Article article);
+
+	PageInfo<Article> selectHotArticleByAdmin(Article article, Integer pageNum, Integer pageSize);
+
+	PageInfo<Article> selectByChannelId(Integer pageNum, Integer pageSize, Integer channel_id);
 }

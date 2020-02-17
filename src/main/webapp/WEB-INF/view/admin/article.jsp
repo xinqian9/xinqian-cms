@@ -32,7 +32,7 @@
 			}else{
 				alert("审核失败！");
 			}
-		});
+		},"json");
 	}
 	function searchArticle(){
 		var title=$("[name='title']").val();
@@ -49,12 +49,12 @@
 	//查看详情
 	function look(id){
 		id=id;
-		$.post("/article/selectArticleById",{id:id},
+		$.post("/article/selectArticleById",{"id":id},
 			function(obj){
 				$(".modal-body").html(obj.content);
 				$(".modal-title").html(obj.title);
-				$("[name='id']").val(obj.id);
-			})
+				$("[name=id]").val(obj.id);
+			},"json");
 	}	
 
 </script>

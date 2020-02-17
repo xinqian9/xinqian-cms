@@ -62,4 +62,19 @@ public class ArticleServiceImpl implements ArticleService{
 		articleDao.addArticle(article);
 		
 	}
+
+	@Override
+	public PageInfo<Article> selectHotArticleByAdmin(Article article, Integer pageNum, Integer pageSize) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum, pageSize);
+		List<Article> list =articleDao.selectHotArticleByAdmin(article);
+		return new PageInfo<Article>(list);
+	}
+
+	@Override
+	public PageInfo<Article> selectByChannelId(Integer pageNum, Integer pageSize, Integer channel_id) {
+		PageHelper.startPage(pageNum, 20);
+		List<Article> list =articleDao.selectByChannelId(channel_id);
+		return new PageInfo<Article>(list);
+	}
 }

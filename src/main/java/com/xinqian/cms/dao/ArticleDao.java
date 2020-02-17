@@ -20,4 +20,8 @@ public interface ArticleDao {
 	List<Category> selectCategorys(Integer id);
 
 	void addArticle(Article article);
+
+	List<Article> selectHotArticleByAdmin(Article article);
+
+	List<Article> selectByChannelId(Integer channel_id);
 }

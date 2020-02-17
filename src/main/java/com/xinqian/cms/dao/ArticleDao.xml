@@ -44,6 +44,10 @@
      		select * from cms_article where id=#{id}
      	</select>
      	
+     	<select id="selectHotArticleByAdmin" resultMap="articleMap">
+     		select * from cms_article where hot=1
+     	</select>
+     	
      	<select id="selectChannels" resultType="Channel">
      		select * from cms_channel
      	</select>
@@ -73,4 +77,9 @@
 			</if>
      		
      	</insert>
+     	
+     	<select id="selectByChannelId" resultMap="articleMap">
+     		select * from cms_article where channel_id=#{channel_id}
+     	</select>
+     	
      </mapper>

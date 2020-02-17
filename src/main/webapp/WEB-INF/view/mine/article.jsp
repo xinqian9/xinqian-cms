@@ -17,10 +17,10 @@
 	
 </style>
 <script type="text/javascript">
-	/* function gopage(pageNum){
+	function gopage(pageNum){
 		var url="/article/selectArticles?pageNum="+pageNum;
 		$("#center").load(url);
-	} */
+	}
 </script>
 </head>
 <body>

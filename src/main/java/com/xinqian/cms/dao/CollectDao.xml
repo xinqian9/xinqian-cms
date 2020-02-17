@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     <mapper namespace="com.xinqian.cms.dao.CollectDao">
+     	<select id="selectCollects" resultType="Collect">
+     		select * from cms_collect where user_id=#{user_id} order by created desc 
+     	</select>
+     	
+     	<delete id="deleteCollect">
+     		delete from cms_collect where user_id=#{user_id} and id=#{id}
+     	</delete>
+     	
+     	<insert id="addCollect">
+     		insert into cms_collect values(null,#{text},#{url},#{user_id},now())
+     	</insert>
+     </mapper>
